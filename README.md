@@ -12,4 +12,27 @@ Here are a set of instructions for getting the latest data
 4. This is a long line JSON file. Run the format json python script. This will output the JSON into a human readable JSON file 
 
    $ convert-to-readable.py <INPUT JSON> <OUTPUT JSON>
-   
+
+## Create a Sample for study
+
+Run the following to get a small data set with 3 objects of a type so you can read it
+
+   $ create-sample.py <INPUT JSON> <SAMPLE OUTPUT JSON>
+
+Study the output JSON to see what fields are available
+
+## Getting Object Counts
+
+Run the following command to get a count of each object type
+
+   $ object-counts.py <INPUT JSON>
+
+  Object Counts
+  PAYLOAD          11472
+  ROCKET BODY      2137
+  DEBRIS           11078
+  UNKNOWN          892
+  ----------------------
+  TOTAL            25579
+
+
