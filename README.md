@@ -27,12 +27,11 @@ Run the following command to get a count of each object type
 
         $ object-counts.py <INPUT JSON>
 
-  
         Object Counts
         PAYLOAD          11472
-        ROCKET BODY      2137
+        ROCKET BODY       2137
         DEBRIS           11078
-        UNKNOWN          892
+        UNKNOWN            892
         ----------------------
         TOTAL            25579
 
