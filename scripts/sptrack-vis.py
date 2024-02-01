@@ -118,28 +118,44 @@ def get_svg_code(fileName, image_size, boxrot):
         <g color="green">
         <rect x="0" y="0" width="{image_size}" height="{image_size}" fill="white" stroke="gray"/>"""
     
-    # braw a 3D box between center +- dims
-    # 1
-    #boxrot = [0,0,0]
-    # print(image_size, center, dims, boxrot)
+    box_faces = []
+    box_faces.append([0,1,2,3,0])
+    box_faces.append([0,3,7,4,0])
+    box_faces.append([4,5,6,7,0])
+    box_faces.append([5,1,2,6,0])
+    box_faces.append([3,7,6,2,0])
+    box_faces.append([0,4,5,1,0])
+
+    for face in box_faces:
+        face[4] = int((new_box[face[0]][2] + new_box[face[1]][2] + new_box[face[2]][2] + new_box[face[3]][2])/4.0)
     
+    box_faces.sort(key=lambda x: x[4], reverse=False)
+
+    for i in range(3):
+        face = box_faces[i]
+        #colorDepth = min(255,int(128 + (dims-face[4])/dims*255))
+        #color = f"#{colorDepth:02X}{colorDepth:02X}{colorDepth:02X}"
+        fcolor = "#FFFFFF"
+        color="#c0c0c0"
+        my_svg_code += f"""<polygon points="{new_box[face[0]][0]},{new_box[face[0]][1]} {new_box[face[1]][0]},{new_box[face[1]][1]} {new_box[face[2]][0]},{new_box[face[2]][1]} {new_box[face[3]][0]},{new_box[face[3]][1]}" fill="{fcolor}" fill-opacity="0.2" stroke="{color}"/>"""
     # line between 0 and 1, 1 and 2, 2 and 3, 3 and 0
-    my_svg_code += f"""<line x1="{new_box[0][0]}" y1="{new_box[0][1]}" x2="{new_box[1][0]}" y2="{new_box[1][1]}" stroke="gray" />"""
-    my_svg_code += f"""<line x1="{new_box[1][0]}" y1="{new_box[1][1]}" x2="{new_box[2][0]}" y2="{new_box[2][1]}" stroke="gray" />"""
-    my_svg_code += f"""<line x1="{new_box[2][0]}" y1="{new_box[2][1]}" x2="{new_box[3][0]}" y2="{new_box[3][1]}" stroke="gray" />"""
-    my_svg_code += f"""<line x1="{new_box[3][0]}" y1="{new_box[3][1]}" x2="{new_box[0][0]}" y2="{new_box[0][1]}" stroke="gray" />"""
+
+    #my_svg_code += f"""<line x1="{new_box[0][0]}" y1="{new_box[0][1]}" x2="{new_box[1][0]}" y2="{new_box[1][1]}" stroke="gray" />"""
+    #my_svg_code += f"""<line x1="{new_box[1][0]}" y1="{new_box[1][1]}" x2="{new_box[2][0]}" y2="{new_box[2][1]}" stroke="gray" />"""
+    #my_svg_code += f"""<line x1="{new_box[2][0]}" y1="{new_box[2][1]}" x2="{new_box[3][0]}" y2="{new_box[3][1]}" stroke="gray" />"""
+    #my_svg_code += f"""<line x1="{new_box[3][0]}" y1="{new_box[3][1]}" x2="{new_box[0][0]}" y2="{new_box[0][1]}" stroke="gray" />"""
 
     # line between 4 and 5, 5 and 6, 6 and 7, 7 and 4
-    my_svg_code += f"""<line x1="{new_box[4][0]}" y1="{new_box[4][1]}" x2="{new_box[5][0]}" y2="{new_box[5][1]}" stroke="gray" />"""
-    my_svg_code += f"""<line x1="{new_box[5][0]}" y1="{new_box[5][1]}" x2="{new_box[6][0]}" y2="{new_box[6][1]}" stroke="gray" />"""
-    my_svg_code += f"""<line x1="{new_box[6][0]}" y1="{new_box[6][1]}" x2="{new_box[7][0]}" y2="{new_box[7][1]}" stroke="gray" />"""
-    my_svg_code += f"""<line x1="{new_box[7][0]}" y1="{new_box[7][1]}" x2="{new_box[4][0]}" y2="{new_box[4][1]}" stroke="gray" />"""
+    #my_svg_code += f"""<line x1="{new_box[4][0]}" y1="{new_box[4][1]}" x2="{new_box[5][0]}" y2="{new_box[5][1]}" stroke="gray" />"""
+    #my_svg_code += f"""<line x1="{new_box[5][0]}" y1="{new_box[5][1]}" x2="{new_box[6][0]}" y2="{new_box[6][1]}" stroke="gray" />"""
+    #my_svg_code += f"""<line x1="{new_box[6][0]}" y1="{new_box[6][1]}" x2="{new_box[7][0]}" y2="{new_box[7][1]}" stroke="gray" />"""
+    #my_svg_code += f"""<line x1="{new_box[7][0]}" y1="{new_box[7][1]}" x2="{new_box[4][0]}" y2="{new_box[4][1]}" stroke="gray" />"""
 
     # line between 0 and 4, 1 and 5, 2 and 6, 3 and 7
-    my_svg_code += f"""<line x1="{new_box[0][0]}" y1="{new_box[0][1]}" x2="{new_box[4][0]}" y2="{new_box[4][1]}" stroke="gray" />"""
-    my_svg_code += f"""<line x1="{new_box[1][0]}" y1="{new_box[1][1]}" x2="{new_box[5][0]}" y2="{new_box[5][1]}" stroke="gray" />"""
-    my_svg_code += f"""<line x1="{new_box[2][0]}" y1="{new_box[2][1]}" x2="{new_box[6][0]}" y2="{new_box[6][1]}" stroke="gray" />"""
-    my_svg_code += f"""<line x1="{new_box[3][0]}" y1="{new_box[3][1]}" x2="{new_box[7][0]}" y2="{new_box[7][1]}" stroke="gray" />"""
+    #my_svg_code += f"""<line x1="{new_box[0][0]}" y1="{new_box[0][1]}" x2="{new_box[4][0]}" y2="{new_box[4][1]}" stroke="gray" />"""
+    #my_svg_code += f"""<line x1="{new_box[1][0]}" y1="{new_box[1][1]}" x2="{new_box[5][0]}" y2="{new_box[5][1]}" stroke="gray" />"""
+    #my_svg_code += f"""<line x1="{new_box[2][0]}" y1="{new_box[2][1]}" x2="{new_box[6][0]}" y2="{new_box[6][1]}" stroke="gray" />"""
+    #my_svg_code += f"""<line x1="{new_box[3][0]}" y1="{new_box[3][1]}" x2="{new_box[7][0]}" y2="{new_box[7][1]}" stroke="gray" />"""
 
     psat = box_center
     for sat in sat_path:
@@ -155,7 +171,15 @@ def get_svg_code(fileName, image_size, boxrot):
         # line between pcoords and coords <line x1="0" y1="80" x2="100" y2="20" stroke="black" />
         my_svg_code += f"""<line x1="{psat[0]}" y1="{psat[1]}" x2="{sat[0]}" y2="{sat[1]}" stroke="blue" />"""
         psat = sat
-        
+    
+    for i in range(3,6,1):
+        face = box_faces[i]
+        #colorDepth = min(255,int(128 + (dims-face[4])/dims*255))
+        #color = f"#{colorDepth:02X}{colorDepth:02X}{colorDepth:02X}"
+        fcolor = "#FFFFFF"
+        color="#202020"
+        my_svg_code += f"""<polygon points="{new_box[face[0]][0]},{new_box[face[0]][1]} {new_box[face[1]][0]},{new_box[face[1]][1]} {new_box[face[2]][0]},{new_box[face[2]][1]} {new_box[face[3]][0]},{new_box[face[3]][1]}" fill="{fcolor}" fill-opacity="0.1" stroke="{color}"/>"""
+    
     my_svg_code += """ </g>
         </svg>"""
 
@@ -172,68 +196,130 @@ class MainWindow(QDialog):
  
         # setting geometry to the window
         self.setGeometry(0, 0, 800, 800)
- 
-        self.formGroupBox = QGroupBox("Visualizer")
+
+        # first create the form on the left
+        formLayout = QGridLayout()
+        formLayout.setColumnMinimumWidth(0,200)
+        formLayout.setColumnStretch(0,6)
+        
         self.fileNameLineEdit = QLineEdit()
-        self.outFileNameEdit = QLineEdit()
+        formLayout.addWidget(QLabel("File Name"),0,0)
+        formLayout.addWidget(self.fileNameLineEdit,1,0)
+
         self.boxRotLineEdit = QLineEdit()
+        formLayout.addWidget(QLabel("Box Rot"),2,0)
+        formLayout.addWidget(self.boxRotLineEdit,3,0)
+
+        self.outFileNameEdit = QLineEdit()
+        formLayout.addWidget(QLabel("Out File Name"),4,0)
+        formLayout.addWidget(self.outFileNameEdit,5,0)
         
+        self.saveFileButton = QPushButton("Save File")
+        self.saveFileButton.clicked.connect(self.saveFile)
+        formLayout.addWidget(self.saveFileButton,6,0)
 
-        self.svgBox = QSvgWidget()
+        self.imageSizeLineEdit = QLineEdit()
+        formLayout.addWidget(QLabel("Image Size"),7,0)
+        formLayout.addWidget(self.imageSizeLineEdit,8,0)
+        self.imageSizeLineEdit.setText("500")
 
-        self.svgBox.setGeometry(0,0,800,800)
-        #self.svgBox.renderer().setAspectRatioMode(Qt.KeepAspectRatio)
-        self.svgBox.setFixedSize(800,800)
+        # Render/Resize layout
+        renderLayout = QHBoxLayout()
         
+        self.renderButton = QPushButton("Render")
+        self.renderButton.clicked.connect(self.renderAction)
+        renderLayout.addWidget(self.renderButton)
 
-        # calling the method that create the form
-        self.createForm()
- 
-        # creating a dialog button for ok and cancel
-        self.buttonBox = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Close)
- 
-        # adding action when form is accepted
-        self.buttonBox.accepted.connect(self.updateImage)
-        #self.buttonBox.clicked.connect(self.updateImage)
-        # adding action when form is rejected
-        self.buttonBox.rejected.connect(self.reject)
+        self.resizeButton = QPushButton("Reset")
+        self.resizeButton.clicked.connect(self.resizeAction)
+        renderLayout.addWidget(self.resizeButton)
 
+        formLayout.addLayout(renderLayout,9,0)
+
+        # control buttons
+        formLayout.addWidget(QLabel("---"),10,0)
+        formLayout.addWidget(QLabel("Control Buttons"),11,0)
 
         self.rotLeftButton = QPushButton("Left")
         self.rotLeftButton.clicked.connect(self.rotLeft)
+        formLayout.addWidget(self.rotLeftButton,12,0)
+
         self.rotRightButton = QPushButton("Right")
         self.rotRightButton.clicked.connect(self.rotRight)
+        formLayout.addWidget(self.rotRightButton,13,0)
+
         self.rotUpButton = QPushButton("Up")
         self.rotUpButton.clicked.connect(self.rotUp)
+        formLayout.addWidget(self.rotUpButton,14,0)
+
         self.rotDownButton = QPushButton("Down")
         self.rotDownButton.clicked.connect(self.rotDown)
+        formLayout.addWidget(self.rotDownButton,15,0)
 
-        self.saveFileButton = QPushButton("Save File")
-        self.saveFileButton.clicked.connect(self.saveFile)
-        # creating a vertical layout
-        mainLayout = QVBoxLayout()
- 
-        # adding form group box to the layout
-        mainLayout.addWidget(self.formGroupBox)
- 
-        # adding button box to the layout
-        mainLayout.addWidget(self.buttonBox)
-        
-        mainLayout.addWidget(self.rotLeftButton)
-        mainLayout.addWidget(self.rotRightButton)
-        mainLayout.addWidget(self.rotUpButton)
-        mainLayout.addWidget(self.rotDownButton)
-        mainLayout.addWidget(self.saveFileButton)
+        # Close button
+        self.buttonBox = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Close)
+        self.buttonBox.accepted.connect(self.updateImage)
+        self.buttonBox.rejected.connect(self.reject)
+        formLayout.addWidget(self.buttonBox,16,0)
+
+        formLayout.setRowStretch(17,6)
+        self.formLayout = formLayout
+
+        # create the Image Layout
+        imageLayout = QGridLayout()
+        #imageLayout.setColumnMinimumWidth(0,500)
+        imageLayout.setRowStretch(1,6)
+        #imageLayout.addWidget(QLabel("Image"),0,0)
+        self.render2RightButton = QPushButton("Reset")
+        self.render2RightButton.clicked.connect(self.resizeAction)
+        imageLayout.addWidget(self.render2RightButton,0,0)
+        self.imageLayout = imageLayout
+        # SVG
+        self.svgBox = QSvgWidget()
+        # calculate the max image size
+        self.setImageSize()
+        imageLayout.setColumnMinimumWidth(0,self.image_size)
+        self.svgBox.setFixedSize(self.image_size,self.image_size)
+        imageLayout.addWidget(self.svgBox,1,0)
+        self.imageLayout = imageLayout
+
+        # create the main layout
+        mainLayout = QGridLayout()
+        mainLayout.setColumnStretch(1,10)
+        mainLayout.setRowStretch(0,10)
+        mainLayout.addLayout(self.formLayout,0,0)
+        mainLayout.addLayout(imageLayout,0,1)
 
         # setting lay out
         self.setLayout(mainLayout)
- 
-    def resizeEvent(self, a0: QResizeEvent | None) -> None:
+
+    def resizeAction(self):
+        self.svgBox.setFixedSize(500,500)
+        self.image_size = 500
+        self.imageSizeLineEdit.setText(str(self.image_size))
+        self.updateImage()
+
+    def setImageSize(self):
         size = self.geometry()
-        self.image_size = min(size.width(), size.height()-150) - 100
+        #self.image_size = min(size.width()-230, size.height()-400)
+        self.image_size = int(self.imageSizeLineEdit.text())
+        self.formLayout.setColumnMinimumWidth(0,200)
+        self.imageLayout.setColumnMinimumWidth(0,self.image_size)
+        
         self.svgBox.setFixedSize(self.image_size,self.image_size)
-       
-        return super().resizeEvent(a0)
+        print (f"Form Size: {size} // {size.width()} x {size.height()} Image size {self.image_size}")
+
+    def renderAction(self):
+        self.setImageSize()
+        print(f"Render Action {self.imageLayout.geometry().width()} {self.image_size}")
+        self.updateImage()
+
+    #def resizeEvent(self, a0: QResizeEvent | None) -> None:
+    #    size = self.geometry()
+    #    self.image_size = min(size.width(), size.height()-150) - 100
+    #    self.svgBox.setFixedSize(self.image_size,self.image_size)
+    #   
+    #    return super().resizeEvent(a0)
     
     def rotLeft(self):
         boxRot = self.boxRotLineEdit.text().split()
@@ -293,71 +379,12 @@ class MainWindow(QDialog):
         self.svgBox.renderer().load(svg_bytes)
         
 
- 
-    # create form method
-    def createForm(self):
- 
-        # creating a form layout
-        overallLayout = QGridLayout()
-        layout = QFormLayout()
- 
-        # box center, dims and line edit
-        layout.addRow(QLabel("File Name"), self.fileNameLineEdit)
-        layout.addRow(QLabel("Out File Name"), self.outFileNameEdit)
-        layout.addRow(QLabel("Box Rot"), self.boxRotLineEdit)
-        #layout.addRow(self.rotLeftButton)
-
-
-        # SVG Box
-        overallLayout.addWidget(self.svgBox, 1, 0)
-        overallLayout.addLayout(layout, 0, 0)
-        overallLayout.setColumnStretch(1, 0)
-
-        #layout.addRow(QLabel("Box Rot"), self.boxRotLineEdit)
-        # setting layout
-        self.formGroupBox.setLayout(overallLayout)
- 
-def tr(coords, sz, pcenter, dims, rot, name="POINT"):
-    x = coords[0]
-    y = coords[1]
-    z = coords[2]
-
-    print(f"-- {name} Input {x:.2f},{y:.2f},{z:.2f}, {sz} {pcenter} {dims} {rot}")
-    distxy = math.sqrt(x**2 + y**2)
-    alphaxy = math.atan2(y, x)
-    #print (f"distxy {alphaxy} + {rot[0]}")
-    x1 = distxy * math.cos(alphaxy + rot[0])
-    y1 = distxy * math.sin(alphaxy + rot[0])
-    z1 = z
-
-    print(f"First {x1:.2f},{y1:.2f},{z1:.2f}")
-
-    distyz = math.sqrt(y1**2 + z1**2)
-    alphayz = math.atan2(z1, y1)
-
-    x2 = x1
-    y2 = distyz * math.cos (alphayz + rot[1])
-    z2 = distyz * math.sin (alphayz + rot[1])
-
-    print(f"Second {x2:.2f},{y2:.2f},{z2:.2f}")
-
-
-
-    sc = dims
-
-    new_coords = [x2,y2,z2]
-    for i in range(3):
-        new_coords[i] = int((new_coords[i]-pcenter[i]) * sz/sc/2.0 + sz/2.0)
-    
-    print (f"-- Output {new_coords}")
-    return new_coords
-
 def rotatec(coords, rot):
     x = coords[0]
     y = coords[1]
     z = coords[2]
 
-    print(f"-- Input {x:.2f},{y:.2f},{z:.2f}, {rot}")
+    # print(f"-- Input {x:.2f},{y:.2f},{z:.2f}, {rot}")
     distxy = math.sqrt(x**2 + y**2)
     alphaxy = math.atan2(y, x)
     
@@ -365,7 +392,7 @@ def rotatec(coords, rot):
     y1 = distxy * math.sin(alphaxy + rot[0])
     z1 = z
 
-    print(f"First {x1:.2f},{y1:.2f},{z1:.2f}")
+    # print(f"First {x1:.2f},{y1:.2f},{z1:.2f}")
 
     distyz = math.sqrt(y1**2 + z1**2)
     alphayz = math.atan2(z1, y1)
@@ -374,7 +401,7 @@ def rotatec(coords, rot):
     y2 = distyz * math.cos (alphayz + rot[1])
     z2 = distyz * math.sin (alphayz + rot[1])
 
-    print(f"Second {x2:.2f},{y2:.2f},{z2:.2f}")
+    # print(f"Second {x2:.2f},{y2:.2f},{z2:.2f}")
 
     distxz = math.sqrt(x2**2 + z2**2)
     alphaxz = math.atan2(z2, x2)
@@ -383,7 +410,7 @@ def rotatec(coords, rot):
     y3 = y2
     z3 = distxz * math.sin(alphaxz + rot[2]) 
     
-    print(f"Third {x3:.2f},{y3:.2f},{z3:.2f}")
+    # print(f"Third {x3:.2f},{y3:.2f},{z3:.2f}")
     return [x3, y3, z3]
 
 if __name__ == '__main__':
